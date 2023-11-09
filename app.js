@@ -1,6 +1,8 @@
 const express=require('express')
 const db_connect=require('./db/mysql_connect')
-const { send } = require('express/lib/response')
+const router=require('./db/mysql_connect')
+const router = require('./routers')
+require('dotenv/config')
 const app =express()
 app.get('/',function (req,res){
     res.send('Anasayfa')
@@ -9,4 +11,10 @@ app.get('/app',function(req,res){
     res.send('app sayfası')
 
 })
-app.listen(3000)
+app.use('api',router)
+app.listen(process.env.port)
+app.use(express.json())
+app.use(express.json({limit:'50mb'}))
+app.use(express.json({limit:'50mb',extended:true,parameterlimit:50000}))
+app.use ('/api,router')
+app.listen(process.env.PORT)
